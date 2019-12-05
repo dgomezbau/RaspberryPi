@@ -1,10 +1,13 @@
-##########################################################################
-# Filename    : dht11.py
-# Description : test for SunFoudner DHT11 humiture & temperature module
-# Author      : Alan
-# Website     : www.osoyoo.com
-# Update      : 2017/07/06
-##########################################################################
+"""/usr/bin/python
+$      Filename      :get-tem-hum.py
+$      Description   :If KEY_5 is pressed,this script will be executed
+$      Author        :alan
+$      Website       :www.osoyoo.com
+$      Update        :2017/07/07
+$      
+$      
+"""
+
 import RPi.GPIO as GPIO
 import time
 
@@ -12,7 +15,7 @@ import time
 DHTPIN = 14
 
 GPIO.setmode(GPIO.BCM)
-
+GPIO.setwarnings(False)
 MAX_UNCHANGE_COUNT = 100
 
 STATE_INIT_PULL_DOWN = 1
@@ -79,7 +82,7 @@ def read_dht11_dat():
             else:
                 continue
     if len(lengths) != 40:
-        print('Data not good, skip')
+        print ("Data not good, skip")
         return False
 
     shortest_pull_up = min(lengths)
@@ -94,7 +97,7 @@ def read_dht11_dat():
         if length > halfway:
             bit = 1
         bits.append(bit)
-    print ('bits: %s, length: %d' % (bits, len(bits)))
+    print ("bits: %s, length: %d" % (bits, len(bits)))
     for i in range(0, len(bits)):
         byte = byte << 1
         if (bits[i]):
@@ -107,25 +110,13 @@ def read_dht11_dat():
     print (the_bytes)
     checksum = (the_bytes[0] + the_bytes[1] + the_bytes[2] + the_bytes[3]) & 0xFF
     if the_bytes[4] != checksum:
-        print ('Data not good, skip')
+        print("Data not good, skip\n")
         return False
 
     return the_bytes[0], the_bytes[2]
 
-def main():
-    print ('Raspberry Pi wiringPi DHT11 Temperature test program\n')
-    while True:
-        result = read_dht11_dat()
-        if result:
-            humidity, temperature = result
-            print ('humidity: %s %%,  Temperature: %s C' % (humidity, temperature))
-        time.sleep(1)
-
-def destroy():
-    GPIO.cleanup()
-
-if __name__ == '__main__':
-    try:
-        main()
-    except KeyboardInterrupt:
-        destroy()
+def getTemHum():
+    result = read_dht11_dat()
+    if result:
+	    humidity, temperature = result
+    print("humidity: %s %%,  Temperature: %s C" % (humidity, temperature))
