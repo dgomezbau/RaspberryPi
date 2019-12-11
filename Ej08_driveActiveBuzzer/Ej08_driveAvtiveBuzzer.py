@@ -3,7 +3,7 @@
 import RPi.GPIO as GPIO
 import time
 
-BuzzerPin = 18
+BuzzerPin = 16
 
 def setup():
     GPIO.setmode(GPIO.BCM)
