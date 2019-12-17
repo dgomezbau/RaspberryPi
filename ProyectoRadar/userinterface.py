@@ -1,6 +1,5 @@
 from tkinter import *
-
-
+import time
 
 class UserInterface(Frame):
 
@@ -34,6 +33,15 @@ class UserInterface(Frame):
             fill='#1f1', width=2)'''
 
         canvas.pack(fill=BOTH, expand=1)
+    
+    def addFigure(self):
+        self.pack(fill=BOTH, expand=1)  
+        canvas = Canvas(self)
+        canvas.create_arc(1, 1, 90, 100, start=0,
+            extent=210, outline="#f11", fill="#1f1", width=2)
+        
+
+
 
 
 def main():
@@ -41,10 +49,15 @@ def main():
     root = Tk()
     ex = UserInterface()
     root.geometry('600x400')
+    #time.sleep(5)
     #ex.configure(background="black")
 
     #root.geometry("330x220+300+300")
     root.mainloop()
+
+
+
+
 
 
 if __name__ == '__main__':
