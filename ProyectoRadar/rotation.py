@@ -2,7 +2,7 @@
 import RPi.GPIO as GPIO
 import time
 
-class Rotation2:
+class Rotation:
     def __init__(self):
 
         #self.OFFSE_DUTY = 0.5        #define pulse offset of servo
@@ -35,7 +35,7 @@ class Rotation2:
     def move(self, sentido):
             self.servoWrite(self.angle)
             self.angle = self.angle+(sentido*self.step)     # Write to servo
-            time.sleep(0.5)
+            #time.sleep(0.5)
 
     def destroy(self):
         p.stop()

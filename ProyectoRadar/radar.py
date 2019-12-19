@@ -2,8 +2,10 @@
 import RPi.GPIO as GPIO 
 import time
 import rotation
-from interfaz import drawLine, drawDots
+from interfaz import drawLine, drawDots, waitForKey
 import math
+import pygame
+import sys
 
 #GPIO Mode (BOARD / BCM) 
 GPIO.setmode(GPIO.BCM) 
@@ -34,7 +36,7 @@ def distance():
     distance = (TimeElapsed * 34300) / 2 
     return distance
 
-rotor = rotation.Rotation2()
+rotor = rotation.Rotation()
 
 def calculo(angle, distance):
     rads = math.radians(angle)
@@ -49,6 +51,7 @@ def calculo(angle, distance):
 if __name__ == '__main__':    
     try:
         while True:
+            run = True
             detectionCount = []
             while rotor.getAngle()<150:
                 rotor.move(1)
@@ -64,6 +67,8 @@ if __name__ == '__main__':
                 #drawLine(coord[0], coord[1])
                 detectionCount.append([coord[0], coord[1]])
                 drawDots(detectionCount)
+                time.sleep(0.5)
+
             
             detectionCount = []
             while rotor.getAngle()>30:
@@ -78,6 +83,7 @@ if __name__ == '__main__':
                 #drawLine(coord[0], coord[1])
                 detectionCount.append([coord[0], coord[1]])
                 drawDots(detectionCount)
+                time.sleep(0.5)
 
     except KeyboardInterrupt: 
         print("Measurement stopped by User") 
