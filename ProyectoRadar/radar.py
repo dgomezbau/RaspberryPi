@@ -2,10 +2,14 @@
 import RPi.GPIO as GPIO 
 import time
 import rotation
-from interfaz import drawLine, drawDots, waitForKey
+from interfaz import drawLine, drawDots, waitForKey, drawInitial
 import math
 import pygame
 import sys
+from multiprocessing import Process
+from display7segmentos import display, setup
+import queue
+import threading
 
 #GPIO Mode (BOARD / BCM) 
 GPIO.setmode(GPIO.BCM) 
@@ -47,43 +51,85 @@ def calculo(angle, distance):
 
     return coordX, coordY
 
+def loopDiplay(dist_queue):
+    while True:
+        instant_dis = dist_queue.get()
+        while dist_queue.empty():
+            display(instant_dis)
     
 if __name__ == '__main__':    
     try:
+        setup()
+        run = False
+        drawInitial()
+        #setup()
+        #p1 = Process(target=loopDiplay)
+        dist_queue = queue.Queue()
+        tdisp = threading.Thread(target=loopDiplay, args=(dist_queue,))
+        tdisp.start()
         while True:
-            run = True
+            for evt in pygame.event.get():
+                if evt.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if evt.type == pygame.MOUSEBUTTONDOWN:
+                    run = False
             detectionCount = []
-            while rotor.getAngle()<150:
+            while rotor.getAngle()<150 and run:
+                for evt in pygame.event.get():
+                    if evt.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
+                    if evt.type == pygame.MOUSEBUTTONDOWN:
+                        run = False
                 rotor.move(1)
                 dist = distance()
                 if dist>200:
                     dist = 200
                 distPixel = (dist*300)/200
+                dist_queue.put(dist)
                 print ("Measured Distance = %.1f cm" % dist)
                 print ("Measured Angle = %.1f º" % rotor.getAngle())
                 coord = calculo(rotor.getAngle(), distPixel)
+                #p1.start()
                 print(coord[0])
                 print(coord[1])
-                #drawLine(coord[0], coord[1])
                 detectionCount.append([coord[0], coord[1]])
                 drawDots(detectionCount)
                 time.sleep(0.5)
 
             
             detectionCount = []
-            while rotor.getAngle()>30:
+            while rotor.getAngle()>30 and run:
+                for evt in pygame.event.get():
+                    if evt.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
+                    if evt.type == pygame.MOUSEBUTTONDOWN:
+                        run = False
                 rotor.move(-1)
                 dist = distance()
                 if dist>200:
                     dist = 200
                 distPixel = (dist*300)/200
+                dist_queue.put(dist)
                 print ("Measured Distance = %.1f cm" % dist)
                 print ("Measured Angle = %.1f º" % rotor.getAngle())
                 coord = calculo(rotor.getAngle(), distPixel)
-                #drawLine(coord[0], coord[1])
                 detectionCount.append([coord[0], coord[1]])
                 drawDots(detectionCount)
                 time.sleep(0.5)
+
+            while not run:
+                rotor.setAngle(30)
+                drawInitial()
+                for evt in pygame.event.get():
+                    if evt.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
+                    if evt.type == pygame.MOUSEBUTTONDOWN:
+                        run = True
+                        time.sleep(0.5)
 
     except KeyboardInterrupt: 
         print("Measurement stopped by User") 

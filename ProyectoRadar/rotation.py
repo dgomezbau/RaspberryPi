@@ -43,3 +43,6 @@ class Rotation:
 
     def getAngle(self):
         return self.angle
+
+    def setAngle(self, newAngle):
+        self.angle = newAngle

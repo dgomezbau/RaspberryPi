@@ -42,7 +42,7 @@ def drawDots(detectionCount):
         pygame.draw.circle(screen, red, (int(i[0]), int(i[1])), 5, 0)
 
     font = pygame.font.Font('freesansbold.ttf', 24)
-    text = font.render('Hold Right for Stop the Sonar', True, green, blue)
+    text = font.render('Click for Stop the Sonar', True, green, blue)
     textRect = text.get_rect() 
     textRect.center = (300, 20)
     screen.blit(text, textRect)
@@ -52,7 +52,7 @@ def drawDots(detectionCount):
 def drawInitial():
     screen.blit(imageImg, (0,0))
     font = pygame.font.Font('freesansbold.ttf', 24)
-    text = font.render('Right Click for Start the Sonar', True, green, blue) 
+    text = font.render('Click for Start the Sonar', True, green, blue) 
     textRect = text.get_rect() 
     textRect.center = (300, 20)
     screen.blit(text, textRect)

@@ -1,10 +1,12 @@
 from multiprocessing import Process
+import multiprocessing, ctypes
 import time
+import queue
 
-def f(name):
+'''def f(name):
     while True:
-        print('hello', name)
-        time.sleep(1)
+        print(name)
+        time.sleep(1)'''
 
 def d(name):
     print('test2', name)
@@ -15,14 +17,23 @@ def d(name):
     time.sleep(2)
     print('test2', name)
 
+def f(q,name):
+    q.put(name)
+
+
 if __name__ == '__main__':
-    p1 = Process(target=f, args=('bob',))
-    p2 = Process(target=d, args=('alice',))
+
+    q = queue.Queue()
+    name = 'Carol'
+    p1 = Process(target=f, args=(q, name))
     p1.start()
-    p2.start()
+    print(q.get())
+    time.sleep(2)
+    name = ' Daniel'
+    f(q,name)
+    print(q.get())
     p1.join()
-    p2.join()
-
-
+    print('Pasa')
+    
 
 

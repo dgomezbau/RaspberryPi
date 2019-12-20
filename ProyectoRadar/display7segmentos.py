@@ -1,17 +1,15 @@
 import RPi.GPIO as GPIO
 import time
-from displayTest import separadorNumeros
-
-
+from displayProcessing import separadorNumeros
+ 
 LSBFIRST = 1
 MSBFIRST = 2
 #define the pins connect to 74HC595
 dataPin   = 5    #DS Pin of 74HC595(Pin14)
 latchPin  = 6      #ST_CP Pin of 74HC595(Pin12)
 clockPin = 13       #SH_CP Pin of 74HC595(Pin11)
-num = separadorNumeros(120)
 digitPin = (17,22,27,10)    # Define the pin of 7-segment display common end
-
+ 
 def setup():
     GPIO.setmode(GPIO.BCM)    # Number GPIOs by its physical location
     GPIO.setup(dataPin, GPIO.OUT)       # Set pin mode to output
@@ -39,18 +37,19 @@ def selectDigit(digit): # Open one of the 7-segment display and close the remain
     GPIO.output(digitPin[1],GPIO.LOW if ((digit&0x04) == 0x04) else GPIO.HIGH)
     GPIO.output(digitPin[2],GPIO.LOW if ((digit&0x02) == 0x02) else GPIO.HIGH)
     GPIO.output(digitPin[3],GPIO.LOW if ((digit&0x01) == 0x01) else GPIO.HIGH)
-
-def display():   #display function for 7-segment display
+ 
+def display(distinput):   #display function for 7-segment display
+    num = separadorNumeros(distinput)
     outData(0xff)   #eliminate residual display    
     selectDigit(0x08)   #Select the first, and display the single digit
     outData(num[3])
     time.sleep(0.003)   #display duration
-
+ 
     outData(0xff)
     selectDigit(0x04)   #Select the first, and display the single digit
     outData(num[2])
     time.sleep(0.003)   #display duration 
-
+ 
     outData(0xff)   #eliminate residual display    
     selectDigit(0x02)   #Select the first, and display the single digit
     outData(num[1])
@@ -64,13 +63,4 @@ def display():   #display function for 7-segment display
         
 def destroy():   # When "Ctrl+C" is pressed, the function is executed. 
     GPIO.cleanup()      
-
-if __name__ == '__main__': # Program starting from here 
-    print ('Program is starting...' )
-    setup() 
-    try:
-        display()  
-
-    except KeyboardInterrupt:  
-        destroy()  
  

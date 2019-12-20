@@ -59,8 +59,8 @@ if __name__ == '__main__':
                     if evt.type == pygame.QUIT:
                         pygame.quit()
                         sys.exit()
-                if evt.type == pygame.MOUSEBUTTONDOWN:
-                    run = False
+                    if evt.type == pygame.MOUSEBUTTONDOWN:
+                        run = False
                 time.sleep(0.5)
                 dist = random.randrange(200)
                 if dist>200:
@@ -83,8 +83,8 @@ if __name__ == '__main__':
                     if evt.type == pygame.QUIT:
                         pygame.quit()
                         sys.exit()
-                if evt.type == pygame.MOUSEBUTTONDOWN:
-                    run = False
+                    if evt.type == pygame.MOUSEBUTTONDOWN:
+                        run = False
                 dist = random.randrange(200)
                 if dist>200:
                     dist = 200
