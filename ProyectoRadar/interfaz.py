@@ -19,13 +19,6 @@ imageImg  = pygame.image.load('radar_draw_v01.png').convert()
 
 screen.blit(imageImg, (0,0))
 
-#screen.fill(white)
-
-'''for event in pygame.event.get():
-    if event.type == pygame.KEYDOWN and event.key == pygame.K_d:
-        is_moving = True
-    elif event.type == pygame.KEYUP and event.key == pygame.K_d:
-        is_moving = False'''
 
 def waitForKey():
     pressedKey = pygame.key.get_pressed()
@@ -57,13 +50,3 @@ def drawInitial():
     textRect.center = (300, 20)
     screen.blit(text, textRect)
     pygame.display.update()
-
-
-
-'''while True:
-    screen.blit(imageImg, (0,0))
-    pygame.draw.line(screen, blue, (300, 400), (cont, 60), 4)
-    pygame.display.update()
-    time.sleep(1)
-
-    cont +=10'''

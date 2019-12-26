@@ -60,6 +60,8 @@ def display(distinput):   #display function for 7-segment display
     outData(num[0])
     time.sleep(0.003)
     
+
+     
         
 def destroy():   # When "Ctrl+C" is pressed, the function is executed. 
     GPIO.cleanup()      
