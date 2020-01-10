@@ -2,6 +2,8 @@ import time
 
 import pigpio
 
+#For initializing the pigpio Daemon run: sudo pigpio
+
 class Rotationpig:
     def __init__(self):
         self.pi = pigpio.pi() # Connect to local Pi.
